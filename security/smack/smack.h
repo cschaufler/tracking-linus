@@ -395,6 +395,13 @@ static inline struct superblock_smack *smack_superblock(
 	return superblock->s_security;
 }
 
+#ifdef CONFIG_KEYS
+static inline struct smack_known **smack_key(const struct key *key)
+{
+	return key->security;
+}
+#endif /* CONFIG_KEYS */
+
 /*
  * Is the directory transmuting?
  */
