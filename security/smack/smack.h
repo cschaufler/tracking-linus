@@ -376,12 +376,12 @@ static inline struct inode_smack *smack_inode(const struct inode *inode)
 
 static inline struct smack_known **smack_msg_msg(const struct msg_msg *msg)
 {
-	return msg->security;
+	return msg->security + smack_blob_sizes.lbs_msg_msg;
 }
 
 static inline struct smack_known **smack_ipc(const struct kern_ipc_perm *ipc)
 {
-	return ipc->security;
+	return ipc->security + smack_blob_sizes.lbs_ipc;
 }
 
 static inline struct socket_smack *smack_sock(const struct sock *sock)
@@ -392,13 +392,13 @@ static inline struct socket_smack *smack_sock(const struct sock *sock)
 static inline struct superblock_smack *smack_superblock(
 					const struct super_block *superblock)
 {
-	return superblock->s_security;
+	return superblock->s_security + smack_blob_sizes.lbs_superblock;
 }
 
 #ifdef CONFIG_KEYS
 static inline struct smack_known **smack_key(const struct key *key)
 {
-	return key->security;
+	return key->security + smack_blob_sizes.lbs_key;
 }
 #endif /* CONFIG_KEYS */
 

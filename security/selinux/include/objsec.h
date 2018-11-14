@@ -179,25 +179,25 @@ static inline struct inode_security_struct *selinux_inode(
 static inline struct msg_security_struct *selinux_msg_msg(
 						const struct msg_msg *msg_msg)
 {
-	return msg_msg->security;
+	return msg_msg->security + selinux_blob_sizes.lbs_msg_msg;
 }
 
 static inline struct ipc_security_struct *selinux_ipc(
 						const struct kern_ipc_perm *ipc)
 {
-	return ipc->security;
+	return ipc->security + selinux_blob_sizes.lbs_ipc;
 }
 
 static inline struct superblock_security_struct *selinux_superblock(
 					const struct super_block *superblock)
 {
-	return superblock->s_security;
+	return superblock->s_security + selinux_blob_sizes.lbs_superblock;
 }
 
 #ifdef CONFIG_KEYS
 static inline struct key_security_struct *selinux_key(const struct key *key)
 {
-	return key->security;
+	return key->security + selinux_blob_sizes.lbs_key;
 }
 #endif /* CONFIG_KEYS */
 
