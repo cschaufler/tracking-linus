@@ -188,4 +188,10 @@ static inline struct ipc_security_struct *selinux_ipc(
 	return ipc->security;
 }
 
+static inline struct superblock_security_struct *selinux_superblock(
+					const struct super_block *superblock)
+{
+	return superblock->s_security;
+}
+
 #endif /* _SELINUX_OBJSEC_H_ */
