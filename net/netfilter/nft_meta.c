@@ -564,21 +564,21 @@ static const struct nla_policy nft_secmark_policy[NFTA_SECMARK_MAX + 1] = {
 
 static int nft_secmark_compute_secid(struct nft_secmark *priv)
 {
-	u32 tmp_secid = 0;
+	struct secids tmp_secid;
 	int err;
 
 	err = security_secctx_to_secid(priv->ctx, strlen(priv->ctx), &tmp_secid);
 	if (err)
 		return err;
 
-	if (!tmp_secid)
+	if (!tmp_secid.common)
 		return -ENOENT;
 
-	err = security_secmark_relabel_packet(tmp_secid);
+	err = security_secmark_relabel_packet(&tmp_secid);
 	if (err)
 		return err;
 
-	priv->secid = tmp_secid;
+	priv->secid = tmp_secid.common;
 	return 0;
 }
 
