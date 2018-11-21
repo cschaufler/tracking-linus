@@ -28,6 +28,7 @@
 #include <linux/security.h>
 #include <linux/init.h>
 #include <linux/rculist.h>
+#include <net/netlabel.h>
 
 /**
  * union security_list_options - Linux Security Module hook function list
@@ -2118,5 +2119,12 @@ extern int lsm_inode_alloc(struct inode *inode);
 void __init lsm_early_cred(struct cred *cred);
 void __init lsm_early_task(struct task_struct *task);
 #endif
+
+#ifdef CONFIG_NETLABEL
+extern int lsm_sock_vet_attr(struct sock *sk,
+			     struct netlbl_lsm_secattr *secattr, u32 flags);
+#define LSM_SOCK_SELINUX	0x00000001
+#define LSM_SOCK_SMACK		0x00000002
+#endif /* CONFIG_NETLABEL */
 
 #endif /* ! __LINUX_LSM_HOOKS_H */

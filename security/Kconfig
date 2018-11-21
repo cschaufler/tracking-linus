@@ -239,6 +239,21 @@ source security/yama/Kconfig
 
 source security/integrity/Kconfig
 
+config SECURITY_STACKING
+	bool "Security module stacking"
+	depends on SECURITY
+	help
+	  Allows multiple major security modules to be stacked.
+	  Modules are invoked in the order registered with a
+	  "bail on fail" policy, in which the infrastructure
+	  will stop processing once a denial is detected. Not
+	  all modules can be stacked. SELinux and Smack are
+	  known to be incompatible. User space components may
+	  have trouble identifying the security module providing
+	  data in some cases.
+
+	  If unsure, answer N.
+
 config LSM
 	string "Ordered list of enabled LSMs"
 	default "yama,loadpin,integrity,selinux,smack,tomoyo,apparmor"
