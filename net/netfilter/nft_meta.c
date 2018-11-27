@@ -611,7 +611,7 @@ static int nft_secmark_obj_init(const struct nft_ctx *ctx,
 		return err;
 	}
 
-	security_secmark_refcount_inc();
+	security_secmark_refcount_inc(0);
 
 	return 0;
 }
@@ -638,7 +638,7 @@ static void nft_secmark_obj_destroy(const struct nft_ctx *ctx, struct nft_object
 {
 	struct nft_secmark *priv = nft_obj_data(obj);
 
-	security_secmark_refcount_dec();
+	security_secmark_refcount_dec(0);
 
 	kfree(priv->ctx);
 }

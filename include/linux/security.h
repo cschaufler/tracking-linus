@@ -80,15 +80,9 @@ enum lsm_event {
 
 struct secids {
 	u32 common;
-#ifdef CONFIG_SECURITY_SELINUX
 	u32 selinux;
-#endif
-#ifdef CONFIG_SECURITY_SMACK
 	u32 smack;
-#endif
-#ifdef CONFIG_SECURITY_APPARMOR
 	u32 apparmor;
-#endif
 	u32 flags;
 };
 
@@ -873,7 +867,7 @@ static inline int security_inode_listsecurity(struct inode *inode, char *buffer,
 static inline void security_inode_getsecid(struct inode *inode,
 					   struct secids *secid)
 {
-	secid->secmark = 0;
+	secid->common = 0;
 }
 
 static inline int security_inode_copy_up(struct dentry *src, struct cred **new)
@@ -1045,7 +1039,7 @@ static inline int security_task_getsid(struct task_struct *p)
 static inline void security_task_getsecid(struct task_struct *p,
 					  struct secids *secid)
 {
-	secid->secmark = 0;
+	secid->common = 0;
 }
 
 static inline int security_task_setnice(struct task_struct *p, int nice)
@@ -1120,7 +1114,7 @@ static inline int security_ipc_permission(struct kern_ipc_perm *ipcp,
 static inline void security_ipc_getsecid(struct kern_ipc_perm *ipcp,
 					 struct secids *secid)
 {
-	secid->secmark = 0;
+	secid->common = 0;
 }
 
 static inline int security_msg_msg_alloc(struct msg_msg *msg)
@@ -1313,8 +1307,9 @@ void security_inet_csk_clone(struct sock *newsk,
 void security_inet_conn_established(struct sock *sk,
 			struct sk_buff *skb);
 int security_secmark_relabel_packet(struct secids *secid);
-void security_secmark_refcount_inc(void);
-void security_secmark_refcount_dec(void);
+void security_secmark_refcount_inc(u8 lsm);
+void security_secmark_refcount_dec(u8 lsm);
+int security_secmark_mode(u8 lsm);
 int security_tun_dev_alloc_security(void **security);
 void security_tun_dev_free_security(void *security);
 int security_tun_dev_create(void);
@@ -1490,12 +1485,17 @@ static inline int security_secmark_relabel_packet(struct secids *secid)
 	return 0;
 }
 
-static inline void security_secmark_refcount_inc(void)
+static inline void security_secmark_refcount_inc(u8 lsm)
 {
 }
 
-static inline void security_secmark_refcount_dec(void)
+static inline void security_secmark_refcount_dec(u8 lsm)
 {
+}
+
+static inline int security_secmark_mode(u8 lsm)
+{
+	return 0;
 }
 
 static inline int security_tun_dev_alloc_security(void **security)

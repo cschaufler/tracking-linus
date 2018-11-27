@@ -1705,7 +1705,11 @@ alloc_out:
 
 DEFINE_LSM(apparmor) = {
 	.name = "apparmor",
+#ifdef CONFIG_SECURITY_STACKING
 	.flags = LSM_FLAG_LEGACY_MAJOR,
+#else
+	.flags = LSM_FLAG_LEGACY_MAJOR | LSM_FLAG_EXCLUSIVE,
+#endif
 	.enabled = &apparmor_enabled,
 	.blobs = &apparmor_blob_sizes,
 	.init = apparmor_init,
